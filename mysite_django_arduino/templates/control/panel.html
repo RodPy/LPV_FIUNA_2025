@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Panel de Control{% endblock %}
+{% block content %}
+  <h1>Panel de Control</h1>
+  <p>Usuario autenticado: <strong>{{ user.username }}</strong></p>
+
+  <form method="post" action="{% url 'blink' %}">
+    {% csrf_token %}
+    <button type="submit">💡 Parpadear LED (Arduino)</button>
+  </form>
+{% endblock %}

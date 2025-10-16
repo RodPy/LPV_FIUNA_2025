@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Demo Login + Arduino{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style="font-family:system-ui;max-width:900px;margin:auto;padding:16px;">
+  <header style="display:flex;gap:12px;justify-content:space-between;align-items:center;margin-bottom:16px;">
+    <div><strong>Demo Django + Arduino</strong></div>
+    <nav style="display:flex;gap:10px;">
+      {% if user.is_authenticated %}
+        <span>Sesión: <strong>{{ user.username }}</strong></span>
+        <a href="{% url 'logout' %}">Cerrar sesión</a>
+      {% else %}
+        <a href="{% url 'login' %}">Iniciar sesión</a>
+        <a href="{% url 'signup' %}">Crear usuario</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  {% if messages %}
+    {% for m in messages %}
+      <div style="border:1px solid #ddd;padding:8px;margin-bottom:8px;">{{ m }}</div>
+    {% endfor %}
+  {% endif %}
+
+  {% block content %}{% endblock %}
+</body>
+</html>

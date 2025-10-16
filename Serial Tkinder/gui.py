@@ -1,3 +1,14 @@
+"""
+serial_viewer_db.py
+Visor serial mínimo con Tkinter que almacena automáticamente números en SQLite
+usando el módulo serial_db.py
+
+Requisitos:
+    pip install pyserial
+Archivos:
+    - serial_db.py (en la misma carpeta)
+"""
+
 # Importamos las librerías necesarias
 import tkinter as tk                # Tkinter para la interfaz gráfica
 import serial                       # pyserial para la comunicación con Arduino

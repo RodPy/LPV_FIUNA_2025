@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+  <h1>Iniciar sesión</h1>
+  <form method="post" style="display:grid;gap:8px;max-width:360px;">
+    {% csrf_token %}
+    <label>Usuario <input name="username" required></label>
+    <label>Contraseña <input type="password" name="password" required></label>
+    <button type="submit">Entrar</button>
+  </form>
+  <p>¿No tenés cuenta? <a href="{% url 'signup' %}">Crear usuario</a></p>
+{% endblock %}
