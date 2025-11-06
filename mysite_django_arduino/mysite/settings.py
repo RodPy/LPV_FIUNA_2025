@@ -56,5 +56,5 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'panel'
 LOGOUT_REDIRECT_URL = 'login'
 
-ARDUINO_PORT = os.getenv('ARDUINO_PORT', 'COM3')
+ARDUINO_PORT = os.getenv('ARDUINO_PORT', 'COM5')
 ARDUINO_BAUD = int(os.getenv('ARDUINO_BAUD', '9600'))

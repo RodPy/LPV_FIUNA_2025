@@ -77,7 +77,13 @@
       {% for log in latest_cmds %}
       <tr>
         <td>{{ log.created_at|date:"Y-m-d H:i:s" }}</td>
-        <td>{{ log.user.username if log.user else "system" }}</td>
+        <td>
+          {% if log.user %}
+            {{ log.user.username }}
+          {% else %}
+            system
+          {% endif %}
+        </td>
         <td>{{ log.command }}</td>
         <td>{{ log.response }}</td>
         <td>{{ log.ok }}</td>

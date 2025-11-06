@@ -1,8 +1,14 @@
+
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from control.serial_service import read_sensor
 from control.models import SensorData
+"""
+python manage.py read_sensor TEMP
+python manage.py read_sensor HUM
+python manage.py read_sensor A0
 
+"""
 class Command(BaseCommand):
     help = "Lee un sensor y guarda en SensorData. Uso: python manage.py read_sensor TEMP"
 

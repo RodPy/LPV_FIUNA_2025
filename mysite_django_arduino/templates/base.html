@@ -11,7 +11,19 @@
     <nav style="display:flex;gap:10px;">
       {% if user.is_authenticated %}
         <span>Sesión: <strong>{{ user.username }}</strong></span>
-        <a href="{% url 'logout' %}">Cerrar sesión</a>
+{% if user.is_authenticated %}
+  <span>Sesión: <strong>{{ user.username }}</strong></span>
+
+  <form action="{% url 'logout' %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" style="background:none;border:none;color:#06c;cursor:pointer;">
+      Cerrar sesión
+    </button>
+  </form>
+{% else %}
+  <a href="{% url 'login' %}">Iniciar sesión</a>
+  <a href="{% url 'signup' %}">Crear usuario</a>
+{% endif %}
       {% else %}
         <a href="{% url 'login' %}">Iniciar sesión</a>
         <a href="{% url 'signup' %}">Crear usuario</a>
