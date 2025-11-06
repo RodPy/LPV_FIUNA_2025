@@ -8,7 +8,7 @@ _ser = None
 
 def _open_serial():
     s = serial.Serial(settings.ARDUINO_PORT, settings.ARDUINO_BAUD, timeout=1)
-    time.sleep(2)
+    time.sleep(2)  # reset del Arduino
     return s
 
 def get_serial():
@@ -37,3 +37,27 @@ def send_line(text: str, expect_line: bool = True) -> str:
 def blink_once():
     resp = send_line("B", expect_line=True)
     return resp or "OK"
+
+def read_sensor(sensor: str):
+    """
+    Envía 'READ:<sensor>' y espera un formato:
+        SENSOR:<sensor>;VALUE:<numero>;UNIT:<unidad>
+    Retorna dict con parseo y crudo.
+    """
+    raw = send_line(f"READ:{sensor}", expect_line=True)
+    ok, value, unit = False, None, ""
+    try:
+        # Parsing súper simple; ajusta según tu protocolo real
+        # Ej: "SENSOR:TEMP;VALUE:23.45;UNIT:C"
+        parts = dict(
+            kv.split(":", 1) for kv in (seg.strip() for seg in raw.split(";")) if ":" in kv
+        )
+        if parts.get("SENSOR", "").upper() == sensor.upper():
+            val_txt = parts.get("VALUE")
+            unit = parts.get("UNIT", "")
+            if val_txt is not None:
+                value = float(val_txt)
+                ok = True
+    except Exception:
+        ok = False
+    return {"ok": ok, "value": value, "unit": unit, "raw": raw}

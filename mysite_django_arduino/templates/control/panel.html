@@ -4,8 +4,90 @@
   <h1>Panel de Control</h1>
   <p>Usuario autenticado: <strong>{{ user.username }}</strong></p>
 
-  <form method="post" action="{% url 'blink' %}">
+  <h2>Acciones</h2>
+  <form method="post" action="{% url 'blink' %}" style="display:inline-block; margin-right:12px;">
     {% csrf_token %}
     <button type="submit">💡 Parpadear LED (Arduino)</button>
   </form>
+
+  <!-- Lecturas rápidas de sensores de ejemplo -->
+  <form method="post" action="{% url 'read_sensor' 'TEMP' %}" style="display:inline-block; margin-right:8px;">
+    {% csrf_token %}
+    <button type="submit">🌡️ Leer TEMP</button>
+  </form>
+  <form method="post" action="{% url 'read_sensor' 'HUM' %}" style="display:inline-block; margin-right:8px;">
+    {% csrf_token %}
+    <button type="submit">💧 Leer HUM</button>
+  </form>
+  <form method="post" action="{% url 'read_sensor' 'A0' %}" style="display:inline-block; margin-right:8px;">
+    {% csrf_token %}
+    <button type="submit">🔌 Leer A0</button>
+  </form>
+
+  <hr>
+
+  <h2>Últimas lecturas (SensorData)</h2>
+  <table border="1" cellpadding="6" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Fecha/Hora</th>
+        <th>Sensor</th>
+        <th>Valor</th>
+        <th>Unidad</th>
+        <th>OK</th>
+        <th>Puerto</th>
+        <th>Baud</th>
+        <th>Raw</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for d in latest_data %}
+      <tr>
+        <td>{{ d.captured_at|date:"Y-m-d H:i:s" }}</td>
+        <td>{{ d.sensor }}</td>
+        <td>{{ d.value }}</td>
+        <td>{{ d.unit }}</td>
+        <td>{{ d.ok }}</td>
+        <td>{{ d.port }}</td>
+        <td>{{ d.baud }}</td>
+        <td style="max-width:360px; overflow-wrap:anywhere;">{{ d.raw }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="8">Sin lecturas aún.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if latest_cmds %}
+  <h2>Últimos comandos (CommandLog)</h2>
+  <table border="1" cellpadding="6" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Fecha/Hora</th>
+        <th>Usuario</th>
+        <th>Cmd</th>
+        <th>Respuesta</th>
+        <th>OK</th>
+        <th>Puerto</th>
+        <th>Baud</th>
+        <th>ms</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for log in latest_cmds %}
+      <tr>
+        <td>{{ log.created_at|date:"Y-m-d H:i:s" }}</td>
+        <td>{{ log.user.username if log.user else "system" }}</td>
+        <td>{{ log.command }}</td>
+        <td>{{ log.response }}</td>
+        <td>{{ log.ok }}</td>
+        <td>{{ log.port }}</td>
+        <td>{{ log.baud }}</td>
+        <td>{{ log.duration_ms }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+
 {% endblock %}
